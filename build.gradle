@@ -1,0 +1,61 @@
+tasks.findByName('wrapper')?.configure {
+    gradleVersion = '6.2'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+apply plugin: 'java-library'
+
+group 'org.comroid'
+version '0.1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+apply from: "gradle/vars.gradle"
+
+tasks.withType(Javadoc) {
+    source = sourceSets.main.java
+    options.encoding = 'UTF-8'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+
+    try {
+        archiveClassifier.set 'sources'
+    } catch (MissingPropertyException ignored) {
+        classifier = "sources"
+    }
+}
+
+task javadocJar(type: Jar) {
+    dependsOn 'javadoc'
+
+    from javadoc.destinationDir
+
+    try {
+        archiveClassifier.set 'javadoc'
+    } catch (MissingPropertyException ignored) {
+        classifier = "javadoc"
+    }
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenLocal()
+    maven {
+        url = 'https://maven.jetbrains.space/comroid/repo'
+        credentials.username = 'Anonymous.User'
+        credentials.password = 'anonymous'
+    }
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    jcenter()
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:19.0.0'
+}
+
+apply from: 'gradle/publishing.gradle'

@@ -1,0 +1,9 @@
+import static java.lang.System.getenv
+
+ext {
+    artifactName = 'edsm-api'
+    userbase = 'comroid-git'
+
+    projectDescription = 'A wrapper for the edsm.net APIs'
+    exportedProjects = rootProject.subprojects.collect { it.name }
+}
