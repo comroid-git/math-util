@@ -1,9 +1,15 @@
 import static java.lang.System.getenv
 
 ext {
-    artifactName = 'edsm-api'
+    artifactName = 'math-util'
     userbase = 'comroid-git'
 
-    projectDescription = 'A wrapper for the edsm.net APIs'
+    projectDescription = 'Math Utilities'
     exportedProjects = rootProject.subprojects.collect { it.name }
+    snapshot = project.version.endsWith('SNAPSHOT')
+
+    canSign = getenv().containsKey('GPG_KEYNAME') && getenv().containsKey('GPG_PASSPHRASE')
+    canPublishToSpace = getenv().containsKey('SPACE_PASSWORD') && getenv().containsKey('SPACE_USERNAME')
+    canPublishToSonatype = canSign && getenv().containsKey('SONATYPE_PASSWORD') && getenv().containsKey('SONATYPE_USERNAME')
+    canPublishToGitHub = !snapshot && canSign && getenv().containsKey('GITHUB_PASSWORD') && getenv().containsKey('GITHUB_USERNAME')
 }
