@@ -7,6 +7,7 @@ import org.comroid.mutatio.ref.ReferenceList;
 import org.comroid.mutatio.ref.ReferenceMap;
 import org.comroid.mutatio.ref.ReferencePipe;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.OptionalLong;
 import java.util.Set;
@@ -26,11 +27,23 @@ public class Project {
         //What is the largest prime factor of the number 600851475143 ?
 
         final long num = 600_851_475_143L;
-
+/*
         System.out.println("solving " + 13195);
         solve(13195);
         System.out.println("solving " + num);
-        solve(num);
+        solve(num);*/
+
+
+        System.out.println("solving " + 13195);
+        long[] factors = getFactors(13195);
+        System.out.println("factors = " + Arrays.toString(factors));
+        System.out.println("solving " + 1092);
+        factors = getFactors(1092);
+        System.out.println("factors = " + Arrays.toString(factors));
+        System.out.println("solving " + num);
+        factors = getFactors(num);
+        System.out.println("factors = " + Arrays.toString(factors));
+
         //getFactors(primes, num);
 
 //getPrimes(500);
@@ -52,31 +65,33 @@ public class Project {
         //System.out.println("max = " + yield.orElse(-1));
     }
 
-    private static long[] getFactors(final RefList<Long> primes, long num) {
-        return getFactors$rec(primes, new long[0], num, getKnown(primes, num));
+    private static long[] getFactors(long num) {
+        return getFactors$rec(new long[0], num, findFirst(num));
     }
 
-    private static long[] getFactors$rec(final RefList<Long> primes, long[] in, long num, long known) {
+    private static long[] getFactors$rec(long[] in, long num, long known) {
         if (known == -1)
             throw new IllegalArgumentException("known is -1");
 
         long div = num / known;
 
+        System.out.println(String.format("run %d; div/num/known = %d / %d / %d", in.length,div,num,known));
         if (isPrime(div)) {
+            System.out.println("is prime");
             long[] yield = new long[in.length + 1];
             System.arraycopy(in, 0, yield, 0, in.length);
             yield[in.length] = div;
+            System.out.println("done; ");
             return yield;
         } else {
+            System.out.println("is not prime");
             long[] base = new long[in.length + 1];
             System.arraycopy(in, 0, base, 0, in.length);
             base[in.length] = known;
-            return getFactors$rec(primes, base, div, getKnown(primes, div));
+            long first = findFirst(div);
+            System.out.println(String.format("decending; div = %d; first = %d", div, first));
+            return getFactors$rec(base, div, first);
         }
-    }
-
-    private static Long getKnown(RefList<Long> primes, long div) {
-        return primes.filter(p -> (div % p) == 0).findFirst().orElse(-1L);
     }
 
     public static void getDivisors(long number) {
@@ -100,21 +115,22 @@ public class Project {
         }
     }
 
-    public static void solve(long num) {
+    public static long findFirst(long num) {
         /*
         if (!isPrime(num))
             throw new IllegalArgumentException("is not prime");
          */
-        long p = num;
+        long p = 1;
 
         // ifs -> teiler minimieren
 
         while(p > 0) {
             if (isPrime(p) && num % p == 0) {
-                System.out.println(", " + p);
+                return p;
             }
-            p--;
+            p++;
         }
+        return -1;
     }
 
     public static void unresolve(long num) {
