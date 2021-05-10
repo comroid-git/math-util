@@ -148,6 +148,10 @@ public class Project {
         int count = 0;
 
         while (hold > 0) {
+            if ((hold % 3) == 0 || (hold % 5) == 0 || (hold % 7) == 0){
+                hold--;
+                continue;
+            }
             if (number % hold == 0) {
                 count++;
             }

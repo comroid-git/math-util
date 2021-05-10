@@ -60,6 +60,8 @@ dependencies {
     if (rootProject.name != 'repo')
         implementation 'org.comroid:mutatio:1.+'
     else implementation project(':guardian:mutatio')
+
+    testImplementation 'org.apache.commons:commons-math3:3.6.1'
 }
 
 apply from: 'gradle/publishing.gradle'
