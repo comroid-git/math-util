@@ -75,21 +75,21 @@ public class Project {
 
         long div = num / known;
 
-        System.out.println(String.format("run %d; div/num/known = %d / %d / %d", in.length,div,num,known));
+       // System.out.println(String.format("run %d; div/num/known = %d / %d / %d", in.length,div,num,known));
         if (isPrime(div)) {
-            System.out.println("is prime");
+            //System.out.println("is prime");
             long[] yield = new long[in.length + 1];
             System.arraycopy(in, 0, yield, 0, in.length);
             yield[in.length] = div;
-            System.out.println("done; ");
+            //System.out.println("done; ");
             return yield;
         } else {
-            System.out.println("is not prime");
+            //System.out.println("is not prime");
             long[] base = new long[in.length + 1];
             System.arraycopy(in, 0, base, 0, in.length);
             base[in.length] = known;
             long first = findFirst(div);
-            System.out.println(String.format("decending; div = %d; first = %d", div, first));
+            //System.out.println(String.format("decending; div = %d; first = %d", div, first));
             return getFactors$rec(base, div, first);
         }
     }
