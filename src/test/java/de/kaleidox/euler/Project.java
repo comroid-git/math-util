@@ -120,17 +120,19 @@ public class Project {
         if (!isPrime(num))
             throw new IllegalArgumentException("is not prime");
          */
-        long p = 1;
+        long p = num;
+        long yield = num;
 
         // ifs -> teiler minimieren
 
         while(p > 0) {
             if (isPrime(p) && num % p == 0) {
-                return p;
+                if (p < yield)
+                    yield = p;
             }
-            p++;
+            p--;
         }
-        return -1;
+        return yield;
     }
 
     public static void unresolve(long num) {
