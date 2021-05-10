@@ -56,6 +56,10 @@ repositories {
 
 dependencies {
     compileOnly 'org.jetbrains:annotations:19.0.0'
+
+    if (rootProject.name != 'repo')
+        implementation 'org.comroid:mutatio:1.+'
+    else implementation project(':guardian:mutatio')
 }
 
 apply from: 'gradle/publishing.gradle'
