@@ -55,7 +55,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.jetbrains:annotations:19.0.0'
+    compileOnly 'org.jetbrains:annotations:21.+'
+
+    if (isAutoDeploy) {
+        api 'org.comroid:mutatio:1.+'
+    } else {
+        api project(':guardian:mutatio')
+    }
 }
 
 apply from: 'gradle/publishing.gradle'
