@@ -1,4 +1,4 @@
-package org.comroid.math.model;
+package org.comroid.math;
 
 public enum Dimension {
     Dim2,
