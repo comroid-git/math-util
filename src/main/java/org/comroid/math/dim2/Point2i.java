@@ -1,5 +1,6 @@
 package org.comroid.math.dim2;
 
+import org.comroid.math.model.Dimension;
 import org.comroid.math.model.Point;
 import org.comroid.math.model.Vector;
 import org.comroid.mutatio.model.Ref;
@@ -17,6 +18,11 @@ public class Point2i implements Point {
     @Override
     public float getY() {
         return y.assertion();
+    }
+
+    @Override
+    public Dimension getDimension() {
+        return Dimension.Dim2;
     }
 
     public Point2i(float x, float y) {

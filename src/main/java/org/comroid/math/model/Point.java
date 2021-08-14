@@ -2,7 +2,7 @@ package org.comroid.math.model;
 
 import org.comroid.api.Named;
 
-public interface Point extends MathOP<Vector, Point>, Named {
+public interface Point extends MathOP<Vector, Point>, Named, DimensionalAnchor {
     float getX();
 
     float getY();

@@ -9,5 +9,6 @@ public interface MathOP<I, O> {
 
     O divide(I dividend);
 
-    interface Unary<T> extends MathOP<T, T> {}
+    interface Unary<T> extends MathOP<T, T> {
+    }
 }

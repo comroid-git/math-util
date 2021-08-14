@@ -4,7 +4,7 @@ import org.comroid.api.Named;
 
 import java.util.function.UnaryOperator;
 
-public interface Vector extends MathOP.Unary<Vector>, UnaryOperator<Point>, Named {
+public interface Vector extends MathOP.Unary<Vector>, UnaryOperator<Point>, Named, DimensionalAnchor {
     float getX();
 
     float getY();
@@ -14,12 +14,12 @@ public interface Vector extends MathOP.Unary<Vector>, UnaryOperator<Point>, Name
     }
 
     @Override
-    default Point apply(Point point) {
-        return point.plus(this);
+    default String getAlternateName() {
+        return String.format("%s<%f;%f;%f>", getClass().getSimpleName(), getX(), getY(), getZ());
     }
 
     @Override
-    default String getAlternateName() {
-        return String.format("%s<%f;%f;%f>", getClass().getSimpleName(), getX(), getY(), getZ());
+    default Point apply(Point point) {
+        return point.plus(this);
     }
 }
