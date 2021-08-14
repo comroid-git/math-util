@@ -1,7 +1,7 @@
 package org.comroid.math.dim3;
 
-import org.comroid.math.dim2.Vector2f;
 import org.comroid.math.Dimension;
+import org.comroid.math.dim2.Vector2f;
 import org.comroid.math.model.Vector;
 import org.comroid.mutatio.model.Ref;
 import org.comroid.mutatio.ref.Reference;
