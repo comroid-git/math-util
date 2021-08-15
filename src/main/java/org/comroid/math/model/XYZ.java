@@ -1,14 +1,21 @@
 package org.comroid.math.model;
 
+import org.comroid.api.Named;
+
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
-public interface XYZ extends DimensionalAnchor {
+public interface XYZ extends DimensionalAnchor, Named {
     float getX();
 
     float getY();
 
     float getZ();
+
+    @Override
+    default String getAlternateName() {
+        return String.format("%s<%f;%f;%f>", getClass().getSimpleName(), getX(), getY(), getZ());
+    }
 
     default float distance(XYZ to) {
         switch (getDimension()) {

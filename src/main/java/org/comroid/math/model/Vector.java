@@ -10,11 +10,6 @@ public interface Vector extends XYZ, MathOP.Unary<Vector>, Named, UnaryOperator<
     }
 
     @Override
-    default String getAlternateName() {
-        return String.format("%s<%f;%f;%f>", getClass().getSimpleName(), getX(), getY(), getZ());
-    }
-
-    @Override
     default Point apply(Point point) {
         return point.plus(this);
     }
