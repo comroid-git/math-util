@@ -1,14 +1,24 @@
 package org.comroid.math.trie;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public final class TrieMap<K, V> implements Map<K, V>, Function<K, String> {
+public final class TrieMap<K, V> implements Map<K, V>, Function<Object, String> {
     private final TrieNode baseNode = new TrieNode((char) 0);
     private final Function<K, String> stringFunction;
+
+    @Override
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 
     public TrieMap(Function<K, String> stringFunction) {
         this.stringFunction = stringFunction;
@@ -19,8 +29,74 @@ public final class TrieMap<K, V> implements Map<K, V>, Function<K, String> {
     }
 
     @Override
-    public String apply(K key) {
-        return stringFunction.apply(key);
+    public String apply(Object key) {
+        //noinspection unchecked
+        return stringFunction.apply((K) key);
+    }
+
+    @Override
+    public int size() {
+        return (int) baseNode.downstream()
+                .filter(it -> it.value != null)
+                .count();
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return baseNode.get(apply(key), 0) != null;
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        return baseNode.downstream()
+                .map(it -> it.value)
+                .anyMatch(value::equals);
+    }
+
+    @Override
+    public V get(Object key) {
+        return baseNode.get(apply(key), 0);
+    }
+
+    @Nullable
+    @Override
+    public V put(K key, V value) {
+        return baseNode.put(apply(key), 0, value);
+    }
+
+    @Override
+    public V remove(Object key) {
+        return baseNode.put(apply(key), 0, null);
+    }
+
+    @Override
+    public void putAll(@NotNull Map<? extends K, ? extends V> m) {
+        m.forEach(this::put);
+    }
+
+    @Override
+    public void clear() {
+        baseNode.clear();
+    }
+
+    @NotNull
+    @Override
+    public Set<K> keySet() {
+        throw new UnsupportedOperationException(); // todo
+    }
+
+    @NotNull
+    @Override
+    public Collection<V> values() {
+        return baseNode.downstream()
+                .map(it -> it.value)
+                .collect(Collectors.toList());
+    }
+
+    @NotNull
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException(); // todo
     }
 
     private final class TrieNode extends ConcurrentHashMap<Character, TrieNode> {
@@ -53,6 +129,16 @@ public final class TrieMap<K, V> implements Map<K, V>, Function<K, String> {
 
         private TrieNode node(char c) {
             return computeIfAbsent(c, TrieNode::new);
+        }
+
+        private Stream<TrieNode> downstream() {
+            return Stream.concat(Stream.of(this), values().stream());
+        }
+
+        @Override
+        public void clear() {
+            values().forEach(TrieNode::clear);
+            super.clear();
         }
     }
 }
