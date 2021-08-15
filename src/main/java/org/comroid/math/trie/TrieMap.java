@@ -1,5 +1,6 @@
 package org.comroid.math.trie;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,6 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Experimental
 public final class TrieMap<K, V> implements Map<K, V>, Function<Object, String> {
     private final TrieNode baseNode = new TrieNode((char) 0);
     private final Function<K, String> stringFunction;
